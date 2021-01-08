@@ -1,6 +1,37 @@
+'''
+Author: zhangxudong
+Date: 2021-01-08 15:00:20
+Description: 
+'''
 import sys
 from jd_spider_requests import JdSeckill
+import signal, psutil
+import time, os
+from threading import Timer
 
+jd_seckill = JdSeckill()
+def kill_processes(parent_pid, sig=signal.SIGTERM):
+    try:
+        parent = psutil.Process(parent_pid)
+    except psutil.NoSuchProcess:
+        return
+    children = parent.children(recursive=True)
+    for process in children:
+        process.send_signal(sig)
+    parent.send_signal(sig)
+    # 定义函数
+def do_function( choice_function ):
+    
+   if choice_function == '1':
+        jd_seckill.reserve()
+   elif choice_function == '2':
+        Timer(60 * 10, lambda:kill_processes(os.getpid()), ()).start()
+        jd_seckill.seckill_by_proc_pool()
+        
+   else:
+        print('没有此功能')
+        sys.exit(1)
+    
 
 if __name__ == '__main__':
     a = """
@@ -18,15 +49,14 @@ if __name__ == '__main__':
  1.预约商品
  2.秒杀抢购商品
     """
-    print(a)
-
-    jd_seckill = JdSeckill()
-    choice_function = input('请选择:')
-    if choice_function == '1':
-        jd_seckill.reserve()
-    elif choice_function == '2':
-        jd_seckill.seckill_by_proc_pool()
+    
+    if len(sys.argv) == 2 :
+        do_function(sys.argv[1])
     else:
-        print('没有此功能')
-        sys.exit(1)
+       print(a)
+       choice_function = input('请选择:')
+       do_function(choice_function)
+    
+    
+
 

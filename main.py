@@ -1,8 +1,3 @@
-'''
-Author: zhangxudong
-Date: 2021-01-08 15:00:20
-Description: 
-'''
 import sys
 from jd_spider_requests import JdSeckill
 import signal, psutil
@@ -35,7 +30,6 @@ def do_function( choice_function ):
 
 if __name__ == '__main__':
     a = """
-
        oooo oooooooooo.            .oooooo..o                     oooo         o8o  oooo  oooo  
        `888 `888'   `Y8b          d8P'    `Y8                     `888         `"'  `888  `888  
         888  888      888         Y88bo.       .ooooo.   .ooooo.   888  oooo  oooo   888   888  
@@ -56,7 +50,3 @@ if __name__ == '__main__':
        print(a)
        choice_function = input('请选择:')
        do_function(choice_function)
-    
-    
-
-

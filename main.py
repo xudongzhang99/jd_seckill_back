@@ -1,8 +1,12 @@
+
+from datetime import datetime
 import sys
 from jd_spider_requests import JdSeckill
 import signal, psutil
 import time, os
 from threading import Timer
+
+
 
 jd_seckill = JdSeckill()
 def kill_processes(parent_pid, sig=signal.SIGTERM):
@@ -16,13 +20,16 @@ def kill_processes(parent_pid, sig=signal.SIGTERM):
     parent.send_signal(sig)
     # 定义函数
 def do_function( choice_function ):
-    
    if choice_function == '1':
         jd_seckill.reserve()
    elif choice_function == '2':
-        Timer(60 * 10, lambda:kill_processes(os.getpid()), ()).start()
-        jd_seckill.seckill_by_proc_pool()
-        
+        weekday = datetime.now().isoweekday()
+        if weekday == 6 or weekday == 7:
+            print('周末没有抢购')
+            sys.exit(1)
+        else:
+            Timer(60 * 12, lambda:kill_processes(os.getpid()), ()).start()
+            jd_seckill.seckill_by_proc_pool()      
    else:
         print('没有此功能')
         sys.exit(1)
